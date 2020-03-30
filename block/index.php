@@ -17,11 +17,11 @@ add_action('enqueue_block_editor_assets', function () {
 
 // Load assets for frontend
 add_action( 'wp_enqueue_scripts', function () {
-    wp_enqueue_style(
-       'gutenberg-konfig',
-       plugins_url( 'block.css', __FILE__ ),
-       []
-    );
+    // wp_enqueue_style(
+    //    'gutenberg-konfig',
+    //    plugins_url( 'block.css', __FILE__ ),
+    //    []
+    // );
     wp_enqueue_script(
         'gutenberg-konfig',
         plugins_url( '../script.js', __FILE__ ),

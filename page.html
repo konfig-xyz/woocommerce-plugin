@@ -1,0 +1,65 @@
+<style>
+#main .container,
+main.template-page.content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.configurator {
+      background: url("https://konfig-production.s3.eu-central-1.amazonaws.com/5df8b8413c1c7b0017dab0f1/textures/710a55b3-37b2-4598-a18f-5544c8414ab9.jpg");
+      background-size: cover;
+      background-position: center top;
+      width: 100%;
+      height: calc(100vh - 150px);
+      border: none;
+      margin-bottom: -10px;
+}
+
+@media only screen and (max-width: 767px) {
+  #main .container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+</style>
+
+
+<script>
+  (async function() {
+    const addToCart = sku =>
+      fetch(`https://lieuweboards.com/wp-json/cocart/v1/add-item`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          sku: sku,
+          quantity: 1
+        })
+      }).then(response => response.json());
+
+    const iframeMessage = async event => {
+      console.log('-----------------');
+      console.log('Message Received');
+      console.log(event);
+      console.log('-----------------');
+      if (!event || !Array.isArray(event.data)) return;
+
+      const [action, items] = event.data;
+
+      for (const item of items) {
+        try {
+          const cartAdding = await addToCart(item);
+          console.log('success', cartAdding);
+        } catch (err) {
+          console.log('error', error);
+        }
+      }
+      window.location.assign("/cart");
+    };
+
+    window.addEventListener('message', iframeMessage, false);
+  })();
+</script>
+
+<iframe class="configurator" src="https://viewer.konfig.io/5e6fd9ac6814d8001704b87e"></iframe>

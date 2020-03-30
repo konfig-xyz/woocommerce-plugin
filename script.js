@@ -23,7 +23,7 @@
 
 
         // Map SKU to id
-        const sampleItems = [] // ["CSG125","CO-R-White","CO-L-PO"]
+        const sampleItems = [] // ["sku1","sku2"]
 
         const [action, items = sampleItems] = event.data;
 

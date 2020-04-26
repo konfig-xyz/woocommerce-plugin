@@ -4,7 +4,7 @@
  * Plugin URI:  https://konfig.xyz
  * Description: Konfig enables interacting with Woocommerce Cart
  * Author:      Konfig Team
- * Version:     1.0.0
+ * Version:     1.0.1
  *
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html

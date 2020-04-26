@@ -1,6 +1,6 @@
 <h1> The Konfig WooCommerce Plugin </h1>
 
-![Version 1.0.0](https://img.shields.io/badge/Version-1.0.0-brightgreen)
+![Version 1.0.1](https://img.shields.io/badge/Version-1.0.0-brightgreen)
 
 ## Installation
 1. Take the archive from the release

@@ -53,12 +53,20 @@ wp.blocks.registerBlockType("konfig/viewer", {
   /* block.js */
   save(props) {
     const { id, background, extraCss } = props.attributes;
-    const css = `
-    background-size: cover;
-    background-position: center top;
-    width:100%;
-    height: calc(100vh - 150px);
-    ${extraCss}`;
+    const css2obj = css => {
+      const regex = /(?<=^|;)\s*([^:]+)\s*:\s*([^;]+)\s*/g;
+      const obj = {};
+      css.replace(regex, (m, key, value) => (obj[key] = value));
+      return obj;
+    };
+
+    const css = {
+      backgroundSize: "cover",
+      backgroundPosition: "center top",
+      width: "100%",
+      height: "calc(100vh - 150px)",
+      ...css2obj(extraCss)
+    };
     // How our block renders on the frontend
     return el("iframe", {
       class: "konfig",

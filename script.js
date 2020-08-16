@@ -1,48 +1,33 @@
 (async function() {
-  const getProductsBySkus = async (skus = []) => {
-    return fetch(`/wp-json/wc/store/products?sku=${skus.join("%2C")}`, {
-      method: "GET"
-    }).then(response => response.json());
-  };
-
-  const addToCart = (id = 0) =>
-    fetch(`/wp-json/wc/store/cart/items`, {
+  const addToCart = skus =>
+    fetch(`/wp-json/konfig/add-to-cart`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
       },
-      body: `id=${id}&quantity=1`
-    }).then(response => response.json());
+      body: JSON.stringify({ skus: skus })
+    });
 
   const iframeMessage = async event => {
-    console.log("-----------------");
-    console.log("Message Received");
-    console.log(event);
-    console.log("-----------------");
     if (!event || !Array.isArray(event.data)) return;
-
-    // Map SKU to id
-    const sampleItems = []; // ["sku1","sku2"]
-
-    const [action, items = sampleItems] = event.data;
-
-    const products = await getProductsBySkus(items);
-
-    for (const item of products) {
-      try {
-        const cartAdding = await addToCart(item.id);
-        console.log("success", cartAdding);
-      } catch (err) {
-        console.warn("error", error);
+    const [action, skus = []] = event.data;
+    switch (action) {
+      case "ADD_TO_CART": {
+        try {
+          const products = await addToCart(skus);
+          const elements = document.getElementsByClassName("konfig");
+          const redirectUrl =
+            elements && elements[0].getAttribute("data-redirect");
+          if (redirectUrl) window.location.assign(redirectUrl);
+          window.parent.postMessage(["ADD_TO_CART_SUCCESS", skus], "*");
+        } catch (err) {
+          console.warn("error", err);
+          window.parent.postMessage(["ADD_TO_CART_ERROR", err], "*");
+        }
       }
+      default:
+        console.log(action);
     }
-
-    // Get redirect url?
-    // TODO allow multiple konfigs on single page ?
-    const elements = document.getElementsByClassName("konfig");
-    const redirectUrl = elements && elements[0].getAttribute("data-redirect");
-    // Redirect
-    if (redirectUrl) window.location.assign(redirectUrl);
   };
 
   window.addEventListener("message", iframeMessage, false);

@@ -56,7 +56,8 @@ wp.blocks.registerBlockType("konfig/viewer", {
     const css2obj = css => {
       const regex = /(?<=^|;)\s*([^:]+)\s*:\s*([^;]+)\s*/g;
       const obj = {};
-      css.replace(regex, (m, key, value) => (obj[key] = value));
+      (css || "").replace(regex, (m, key, value) => (obj[key] = value));
+      console.log(obj);
       return obj;
     };
 
